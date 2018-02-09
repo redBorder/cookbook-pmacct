@@ -8,5 +8,5 @@ default_action :add
 
 attribute :user, :kind_of => String, :default => "pmacct"
 attribute :cdomain, :kind_of => String, :default => "redborder.cluster"
-
+attribute :sensors, :kind_of => Hash, :default => []
 
