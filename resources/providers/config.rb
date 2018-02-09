@@ -90,8 +90,8 @@ action :register do
   begin
     if !node["pmacct"]["registered"]
       query = {}
-      query["ID"] = "pmacct-#{node["hostname"]}"
-      query["Name"] = "pmacct"
+      query["ID"] = "sfacct-#{node["hostname"]}"
+      query["Name"] = "sfacct"
       query["Address"] = "#{node["ipaddress"]}"
       query["Port"] = "6343"
       json_query = Chef::JSONCompat.to_json(query)
@@ -102,7 +102,7 @@ action :register do
       end.run_action(:run)
 
       node.set["pmacct"]["registered"] = true
-      Chef::Log.info("pmacct service has been registered to consul")
+      Chef::Log.info("sfacct service has been registered to consul")
     end
   rescue => e
     Chef::Log.error(e.message)
@@ -113,12 +113,12 @@ action :deregister do
   begin
     if node["pmacct"]["registered"]
       execute 'Deregister service in consul' do
-        command "curl http://localhost:8500/v1/agent/service/deregister/pmacct-#{node["hostname"]} &>/dev/null"
+        command "curl http://localhost:8500/v1/agent/service/deregister/sfacct-#{node["hostname"]} &>/dev/null"
         action :nothing
       end.run_action(:run)
 
       node.set["pmacct"]["registered"] = false
-      Chef::Log.info("pmacct service has been deregistered from consul")
+      Chef::Log.info("sfacct service has been deregistered from consul")
     end
   rescue => e
     Chef::Log.error(e.message)
