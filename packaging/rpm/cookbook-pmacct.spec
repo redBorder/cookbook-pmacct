@@ -2,7 +2,7 @@
 
 Name: cookbook-pmacct
 Version: %{__version}
-Release: %{__release}%{?dist}.1
+Release: %{__release}%{?dist}
 BuildArch: noarch
 Summary: pmacct cookbook to install and configure it in redborder environments
 
