@@ -2,7 +2,7 @@
 
 Name: cookbook-pmacct
 Version: %{__version}
-Release: %{__release}%{?dist}
+Release: %{__release}%{?dist}.1
 BuildArch: noarch
 Summary: pmacct cookbook to install and configure it in redborder environments
 
@@ -47,5 +47,8 @@ esac
 %doc
 
 %changelog
+* Thu Oct 14 2021 Javier Rodriguez <javiercrg@redborder.com> -  0.0.2-1
+- sfacctd configuration
+
 * Thu Feb 8 2018 Juan J. Prieto <jjprieto@redborder.com> - 0.0.1-1
 - first spec version

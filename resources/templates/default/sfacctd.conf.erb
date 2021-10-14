@@ -6,3 +6,45 @@
 !       GLOBAL SETTINGS        !
 !······························!
 
+! Daemonize the process
+! daemonize: true
+
+!······························!
+!           PLUGINS            !
+!······························!
+
+plugins: kafka
+
+!······························!
+!     KAFKA PLUGIN CONFIG      !
+!······························!
+
+kafka_output: json
+kafka_topic: <%= @kafka_topic %>
+kafka_refresh_time: 5
+kafka_history: 5m
+kafka_history_roundoff: m
+kafka_broker_host: <%= @kafka_hosts %>
+kafka_broker_port: <%= @kafka_broker_port %>
+
+!······························!
+!    GEOIPV2 PLUGIN CONFIG     !
+!······························!
+
+geoipv2_file: <%=@geo_country %>
+
+
+!······························!
+!            SFLOW             !
+!······························!
+
+sfacctd_time_new: true
+sfacctd_account_options: true
+sfacctd_port: 6343
+sfacctd_ip: <%= "#{node["ipaddress"]}"  %>
+
+sfprobe_direction: tag
+
+pre_tag_map: /etc/pretag.map
+
+aggregate: peer_src_ip, peer_dst_ip, src_host, dst_host, src_port, dst_port, tcpflags, timestamp_arrival, proto, tos, tag, export_proto_seqno, in_iface, out_iface, src_host_country, dst_host_country, sampling_rate

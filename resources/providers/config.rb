@@ -11,6 +11,10 @@ action :add do
 
     user = new_resource.user
     cdomain = new_resource.cdomain
+    kafka_hosts = new_resource.kafka_hosts
+    kafka_topic = new_resource.kafka_topic
+    kafka_broker_port = new_resource.kafka_broker_port
+    geo_country = new_resource.geo_country
 
     yum_package "pmacct" do
       action :upgrade
@@ -31,7 +35,12 @@ action :add do
       mode 0644
       ignore_failure true
       cookbook "pmacct"
-      variables(:flow_nodes => flow_nodes)
+      variables(:flow_nodes => flow_nodes,
+                :kafka_hosts => kafka_hosts,
+                :kafka_topic => kafka_topic,
+                :kafka_broker_port => kafka_broker_port,
+                :geo_country => geo_country
+      )
       notifies :restart, "service[sfacctd]", :delayed
     end
 
