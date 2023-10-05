@@ -16,7 +16,7 @@ action :add do
     kafka_broker_port = new_resource.kafka_broker_port
     geo_country = new_resource.geo_country
 
-    yum_package "pmacct" do
+    dnf_package "pmacct" do
       action :upgrade
       flush_cache [:before]
     end
@@ -85,7 +85,7 @@ action :remove do
       end
     end
 
-    yum_package "pmacct" do
+    dnf_package "pmacct" do
       action :remove
     end
 
