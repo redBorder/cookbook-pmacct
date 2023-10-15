@@ -21,9 +21,10 @@ action :add do
       flush_cache [:before]
     end
 
-    user user do
-      action :create
-      system true
+    execute "create_user" do
+      command "/usr/sbin/useradd -r #{user}"
+      ignore_failure true
+      not_if "getent passwd #{user}"
     end
 
     flow_nodes = []
