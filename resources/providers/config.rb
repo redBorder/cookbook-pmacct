@@ -111,7 +111,7 @@ action :register do
          action :nothing
       end.run_action(:run)
 
-      node.default["pmacct"]["registered"] = true
+      node.normal["pmacct"]["registered"] = true
       Chef::Log.info("sfacct service has been registered to consul")
     end
   rescue => e
@@ -127,7 +127,7 @@ action :deregister do
         action :nothing
       end.run_action(:run)
 
-      node.default["pmacct"]["registered"] = false
+      node.normal["pmacct"]["registered"] = false
       Chef::Log.info("sfacct service has been deregistered from consul")
     end
   rescue => e
