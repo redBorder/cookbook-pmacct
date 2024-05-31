@@ -47,6 +47,9 @@ esac
 %doc
 
 %changelog
+* Thu Dec 21 2023 Nils Verschaeve <nverschaeve@redborder.com> -  0.0.4-1
+- Fix error with kafka service names 
+
 * Thu Oct 14 2021 Javier Rodriguez <javiercrg@redborder.com> -  0.0.2-1
 - sfacctd configuration
 

@@ -16,14 +16,15 @@ action :add do
     kafka_broker_port = new_resource.kafka_broker_port
     geo_country = new_resource.geo_country
 
-    yum_package "pmacct" do
+    dnf_package "pmacct" do
       action :upgrade
       flush_cache [:before]
     end
 
-    user user do
-      action :create
-      system true
+    execute "create_user" do
+      command "/usr/sbin/useradd -r #{user}"
+      ignore_failure true
+      not_if "getent passwd #{user}"
     end
 
     flow_nodes = []
@@ -85,7 +86,7 @@ action :remove do
       end
     end
 
-    yum_package "pmacct" do
+    dnf_package "pmacct" do
       action :remove
     end
 
@@ -110,7 +111,7 @@ action :register do
          action :nothing
       end.run_action(:run)
 
-      node.set["pmacct"]["registered"] = true
+      node.normal["pmacct"]["registered"] = true
       Chef::Log.info("sfacct service has been registered to consul")
     end
   rescue => e
@@ -126,7 +127,7 @@ action :deregister do
         action :nothing
       end.run_action(:run)
 
-      node.set["pmacct"]["registered"] = false
+      node.normal["pmacct"]["registered"] = false
       Chef::Log.info("sfacct service has been deregistered from consul")
     end
   rescue => e

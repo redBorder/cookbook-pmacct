@@ -24,7 +24,7 @@ kafka_topic: <%= @kafka_topic %>
 kafka_refresh_time: 5
 kafka_history: 5m
 kafka_history_roundoff: m
-kafka_broker_host: <%= @kafka_hosts %>
+kafka_broker_host: <%= @kafka_hosts.join(",") %>
 kafka_broker_port: <%= @kafka_broker_port %>
 
 !······························!
