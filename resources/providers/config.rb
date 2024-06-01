@@ -25,7 +25,7 @@ action :add do
     directory '/etc/pmacct' do
       owner user
       group group
-      mode 0755
+      mode '0755'
     end
 
     flow_nodes = []
