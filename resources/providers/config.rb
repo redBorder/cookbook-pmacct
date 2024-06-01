@@ -27,6 +27,12 @@ action :add do
       not_if "getent passwd #{user}"
     end
 
+    directory "/etc/pmacct" do
+      owner user
+      group group
+      mode 0755
+    end
+
     flow_nodes = []
 
     template "/etc/pmacct/sfacctd.conf" do
@@ -71,7 +77,7 @@ end
 
 action :remove do
   begin
-    
+
     service "sfacctd" do
       service_name "sfacctd"
       ignore_failure true
