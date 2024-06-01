@@ -22,7 +22,7 @@ action :add do
       not_if "getent passwd #{user}"
     end
 
-    directory "/etc/pmacct" do
+    directory '/etc/pmacct' do
       owner user
       group group
       mode 0755
