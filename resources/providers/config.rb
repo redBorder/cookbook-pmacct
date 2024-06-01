@@ -27,6 +27,12 @@ action :add do
       not_if "getent passwd #{user}"
     end
 
+    directory "/etc/pmacct" do
+      owner user
+      group group
+      mode 0755
+    end
+
     flow_nodes = []
 
     template "/etc/pmacct/sfacctd.conf" do
@@ -71,7 +77,7 @@ end
 
 action :remove do
   begin
-    
+
     service "sfacctd" do
       service_name "sfacctd"
       ignore_failure true
@@ -107,7 +113,7 @@ action :register do
       json_query = Chef::JSONCompat.to_json(query)
 
       execute 'Register service in consul' do
-         command "curl http://localhost:8500/v1/agent/service/register -d '#{json_query}' &>/dev/null"
+         command "curl -X PUT http://localhost:8500/v1/agent/service/register -d '#{json_query}' &>/dev/null"
          action :nothing
       end.run_action(:run)
 
@@ -123,7 +129,7 @@ action :deregister do
   begin
     if node["pmacct"]["registered"]
       execute 'Deregister service in consul' do
-        command "curl http://localhost:8500/v1/agent/service/deregister/sfacct-#{node["hostname"]} &>/dev/null"
+        command "curl -X PUT http://localhost:8500/v1/agent/service/deregister/sfacct-#{node["hostname"]} &>/dev/null"
         action :nothing
       end.run_action(:run)
 
