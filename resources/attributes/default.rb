@@ -1,3 +1,2 @@
-#Flags
-default["pmacct"]["registered"] = false
-
+# Flags
+default['pmacct']['registered'] = false
