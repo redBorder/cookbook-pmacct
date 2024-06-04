@@ -1,6 +1,12 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 0.0.6
+
+  - Miguel Negron
+    - [3ec8ebb] Merge with development
+    - [eb39baa] Fix lint
+
 ## 0.0.5
 
   - Miguel Negrón
