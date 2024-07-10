@@ -1,6 +1,11 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 0.1.0
+
+  - David Vanhoucke
+    - [c62821e] add correct aggregation fields for sflow
+
 ## 0.0.6
 
   - Miguel Negron
