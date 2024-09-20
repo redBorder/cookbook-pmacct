@@ -1,6 +1,14 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 0.2.0
+
+  - Miguel Negrón
+    - [1e8f3fa] Merge pull request #10 from redBorder/bugfix/#13550_restrain_user_permissions
+  - Luis Blanco
+    - [45ebad0] Merge branch 'master' into bugfix/#13550_restrain_user_permissions
+    - [ca6db74] add user pmacct with nologin
+
 ## 0.1.0
 
   - David Vanhoucke
