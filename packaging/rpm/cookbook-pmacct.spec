@@ -25,6 +25,9 @@ chmod -R 0755 %{buildroot}%{cookbook_path}
 install -D -m 0644 README.md %{buildroot}%{cookbook_path}/README.md
 
 %pre
+if [ -d /var/chef/cookbooks/pmacct ]; then
+    rm -rf /var/chef/cookbooks/pmacct
+fi
 
 %post
 case "$1" in
@@ -38,6 +41,12 @@ case "$1" in
   ;;
 esac
 
+%postun
+# Deletes directory when uninstall the package
+if [ "$1" = 0 ] && [ -d /var/chef/cookbooks/pmacct ]; then
+  rm -rf /var/chef/cookbooks/pmacct
+fi
+
 %files
 %defattr(0755,root,root)
 %{cookbook_path}
@@ -47,11 +56,14 @@ esac
 %doc
 
 %changelog
-* Thu Dec 21 2023 Nils Verschaeve <nverschaeve@redborder.com> -  0.0.4-1
+* Thu Oct 10 2024 Miguel Negrón <manegron@redborder.com>
+- Add pre and postun
+
+* Thu Dec 21 2023 Nils Verschaeve <nverschaeve@redborder.com>
 - Fix error with kafka service names 
 
-* Thu Oct 14 2021 Javier Rodriguez <javiercrg@redborder.com> -  0.0.2-1
+* Thu Oct 14 2021 Javier Rodriguez <javiercrg@redborder.com>
 - sfacctd configuration
 
-* Thu Feb 8 2018 Juan J. Prieto <jjprieto@redborder.com> - 0.0.1-1
+* Thu Feb 8 2018 Juan J. Prieto <jjprieto@redborder.com>
 - first spec version
