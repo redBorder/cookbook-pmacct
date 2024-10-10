@@ -1,6 +1,11 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 0.2.1
+
+  - Miguel Negrón
+    - [67633fc] Add pre and postun to clean the cookbook
+
 ## 0.2.0
 
   - Miguel Negrón
@@ -16,7 +21,7 @@ cookbook-pmacct CHANGELOG
 
 ## 0.0.6
 
-  - Miguel Negron
+  - Miguel Negrón
     - [3ec8ebb] Merge with development
     - [eb39baa] Fix lint
 
