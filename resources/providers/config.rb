@@ -59,7 +59,7 @@ action :add do
     service 'sfacctd' do
       service_name 'sfacctd'
       ignore_failure true
-      supports status: true, reload: true, restart: true, enable: true
+      supports status: true, reload: true, restart: true, enable: true, stop: true
       if node['redborder']['leader_configuring'] 
         action [:enable, :stop]
       else
