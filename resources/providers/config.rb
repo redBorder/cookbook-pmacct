@@ -42,7 +42,7 @@ action :add do
                 kafka_topic: kafka_topic,
                 kafka_broker_port: kafka_broker_port,
                 geo_country: geo_country)
-      notifies :restart, 'service[sfacctd]', :delayed
+      notifies :restart, 'service[sfacctd]', :delayed unless node['redborder']['leader_configuring']
     end
 
     template '/etc/pmacct/pretag.map' do
@@ -53,7 +53,7 @@ action :add do
       ignore_failure true
       cookbook 'pmacct'
       variables(flow_nodes: flow_nodes)
-      notifies :restart, 'service[sfacctd]', :delayed
+      notifies :restart, 'service[sfacctd]', :delayed unless node['redborder']['leader_configuring']
     end
 
     service 'sfacctd' do
@@ -61,7 +61,7 @@ action :add do
       ignore_failure true
       supports status: true, reload: true, restart: true, enable: true, stop: true
       if node['redborder']['leader_configuring'] 
-        action [:enable, :stop]
+        action [:enable]
       else
         action [:enable, :start]
       end
