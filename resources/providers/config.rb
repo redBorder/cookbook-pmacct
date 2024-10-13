@@ -60,7 +60,11 @@ action :add do
       service_name 'sfacctd'
       ignore_failure true
       supports status: true, reload: true, restart: true, enable: true
-      action [:start, :enable]
+      if node['redborder']['leader_configuring'] 
+        action [:enable, :stop]
+      else
+        action [:enable, :start]
+      end
     end
 
     Chef::Log.info('Pmacct cookbook has been processed')
