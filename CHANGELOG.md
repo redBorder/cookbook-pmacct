@@ -1,6 +1,25 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 1.0.0
+
+  - Miguel Negrón
+    - [dcd22fb] Merge pull request #14 from redBorder/improvement/boost_installation_stage_1
+    - [1e8f3fa] Merge pull request #10 from redBorder/bugfix/#13550_restrain_user_permissions
+    - [dcd22fb] Merge pull request #14 from redBorder/improvement/boost_installation_stage_1
+    - [3983413] Fix lint
+    - [bc1b2ec] Optimizing add action
+    - [04730ab] Add stop to sfacctd
+    - [0963ad8] Add leader configuring
+    - [5c33454] Bump version
+    - [67633fc] Add pre and postun to clean the cookbook
+    - [9e712fc] Bump version
+    - [1e8f3fa] Merge pull request #10 from redBorder/bugfix/#13550_restrain_user_permissions
+    - [9e712fc] Bump version
+  - Luis Blanco
+    - [45ebad0] Merge branch 'master' into bugfix/#13550_restrain_user_permissions
+    - [ca6db74] add user pmacct with nologin
+
 ## 0.2.1
 
   - Miguel Negrón
