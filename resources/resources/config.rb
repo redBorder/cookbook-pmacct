@@ -11,3 +11,4 @@ attribute :kafka_hosts, kind_of: Array, default: ['127.0.0.1']
 attribute :kafka_topic, kind_of: String, default: 'sflow'
 attribute :kafka_broker_port, kind_of: Integer, default: 9092
 attribute :geo_country, kind_of: String, default: '/usr/share/GeoIP/GeoLiteCountry.dat'
+attribute :sfacctd_ip, kind_of: String
