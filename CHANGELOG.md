@@ -1,6 +1,11 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 1.1.0
+
+  - Miguel Negrón
+    - [124a6b3] Merge pull request #16 from redBorder/bugfix/#18169_rename_pmacctd_to_sfacctd_service
+
 ## 1.0.0
 
   - Miguel Negrón
