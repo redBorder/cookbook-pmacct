@@ -41,7 +41,7 @@ geoipv2_file: <%=@geo_country %>
 sfacctd_time_new: true
 sfacctd_account_options: true
 sfacctd_port: 6343
-sfacctd_ip: <%= "#{node["ipaddress"]}"  %>
+sfacctd_ip: <%= "#{@sfacctd_ip}" %>
 
 sfprobe_direction: tag
 

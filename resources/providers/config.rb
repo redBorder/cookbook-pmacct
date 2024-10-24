@@ -10,6 +10,7 @@ action :add do
     kafka_topic = new_resource.kafka_topic
     kafka_broker_port = new_resource.kafka_broker_port
     geo_country = new_resource.geo_country
+    sfacctd_ip = new_resource.sfacctd_ip
 
     dnf_package 'pmacct' do
       action :upgrade
@@ -41,7 +42,8 @@ action :add do
                 kafka_hosts: kafka_hosts,
                 kafka_topic: kafka_topic,
                 kafka_broker_port: kafka_broker_port,
-                geo_country: geo_country)
+                geo_country: geo_country,
+                sfacctd_ip: sfacctd_ip)
       notifies :restart, 'service[sfacctd]', :delayed unless node['redborder']['leader_configuring']
     end
 
