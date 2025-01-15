@@ -1,6 +1,11 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 1.2.0
+
+  - David Vanhoucke
+    - [eb72980] add vlan aggregation
+
 ## 1.1.0
 
   - Miguel Negrón
