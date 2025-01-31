@@ -1,6 +1,11 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 1.2.1
+
+  - Miguel Negrón
+    - [4ec7765] Update README
+
 ## 1.2.0
 
   - David Vanhoucke
