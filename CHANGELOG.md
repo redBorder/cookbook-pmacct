@@ -1,6 +1,11 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 1.2.2
+
+  - nilsver
+    - [fc67d60] remove flush cache
+
 ## 1.2.1
 
   - Miguel Negrón
