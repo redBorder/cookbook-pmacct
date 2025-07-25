@@ -1,6 +1,11 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 1.2.3
+
+  - jnavarrorb
+    - [3d6245d] Remove executable permissions on non-executable files
+
 ## 1.2.2
 
   - nilsver
