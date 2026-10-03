@@ -1,6 +1,11 @@
 cookbook-pmacct CHANGELOG
 ===============
 
+## 1.2.4
+
+  - manegron
+    - [7f845e6] Upload cookbook only if opscode-erchef is active
+
 ## 1.2.3
 
   - jnavarrorb
