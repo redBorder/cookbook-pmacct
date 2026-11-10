@@ -11,7 +11,8 @@ action :add do
     kafka_topic = new_resource.kafka_topic
     sfacctd_ip = new_resource.sfacctd_ip || '0.0.0.0'
 
-    # redborder-sfacctd ships the sfacctd unit running x2kafka and obsoletes the legacy pmacct package
+    # redborder-sfacctd ships the sfacctd unit running x2kafka, overriding the one of the legacy
+    # pmacct package, which is kept because rb-exporter needs its pmacctd
     dnf_package 'redborder-sfacctd' do
       action :upgrade
     end
