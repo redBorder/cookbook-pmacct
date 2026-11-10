@@ -79,6 +79,9 @@ module Pmacct
         'client_id' => 'sfacctd',
         'async' => true,
         'stats_socket' => '/run/sfacctd/sfacctd.sock',
+        # keepalived health checks /health on this port from the other managers
+        'stats_bind' => '0.0.0.0',
+        'stats_port' => 7984,
         'listeners' => [listener],
       }
     end
