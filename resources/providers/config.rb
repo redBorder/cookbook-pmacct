@@ -7,9 +7,13 @@ action :add do
   begin
     config_dir = new_resource.config_dir
     sensors = new_resource.sensors
-    brokers = new_resource.kafka_hosts.map { |host| "#{host}:#{new_resource.kafka_broker_port}" }
-    kafka_topic = new_resource.kafka_topic
-    sfacctd_ip = new_resource.sfacctd_ip || '0.0.0.0'
+    settings = {
+      port: new_resource.port,
+      bind: new_resource.sfacctd_ip || '0.0.0.0',
+      brokers: new_resource.kafka_hosts.map { |host| "#{host}:#{new_resource.kafka_broker_port}" },
+      topic: new_resource.kafka_topic,
+      stats_port: new_resource.stats_port,
+    }
 
     # redborder-sfacctd ships the sfacctd unit running x2kafka, overriding the one of the legacy
     # pmacct package, which is kept because rb-exporter needs its pmacctd
@@ -42,7 +46,7 @@ action :add do
       group 'root'
       mode '0644'
       retries 2
-      variables(config: x2kafka_config(sensors, brokers, sfacctd_ip, kafka_topic))
+      variables(config: x2kafka_config(sensors, settings))
       notifies :restart, 'service[sfacctd]', :delayed unless node['redborder']['leader_configuring']
     end
 
@@ -97,7 +101,7 @@ action :register do
       query['ID'] = "sfacct-#{node['hostname']}"
       query['Name'] = 'sfacct'
       query['Address'] = "#{node['ipaddress']}"
-      query['Port'] = '6343'
+      query['Port'] = new_resource.port.to_s
       json_query = Chef::JSONCompat.to_json(query)
 
       execute 'Register service in consul' do

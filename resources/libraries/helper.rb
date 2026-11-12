@@ -11,7 +11,8 @@ module Pmacct
     # enrichment_map entry matching the exporter IP, so every sensor IP gets one
     # flat entry. home_nets and span_port are per listener in x2kafka, so they
     # are merged across all the sensors.
-    def x2kafka_config(sensors, brokers, bind, topic)
+    # settings: port, bind, brokers, topic and stats_port of the resource.
+    def x2kafka_config(sensors, settings)
       enrichment_map = {}
       home_nets = []
       span_ports = []
@@ -63,9 +64,9 @@ module Pmacct
       listener = {
         'name' => 'sfacctd',
         'proto' => 'sflow',
-        'bind' => bind,
-        'port' => 6343,
-        'topic' => topic,
+        'bind' => settings[:bind],
+        'port' => settings[:port],
+        'topic' => settings[:topic],
         'span_port' => !span_ports.empty? && span_ports.all?,
         'enrichment_key' => 'sensor_ip',
         'enrichment_map' => enrichment_map,
@@ -74,14 +75,14 @@ module Pmacct
       listener['home_nets'] = home_nets.uniq unless home_nets.empty?
 
       {
-        'brokers' => brokers,
-        'topic' => topic,
+        'brokers' => settings[:brokers],
+        'topic' => settings[:topic],
         'client_id' => 'sfacctd',
         'async' => true,
         'stats_socket' => '/run/sfacctd/sfacctd.sock',
         # keepalived health checks /health on this port from the other managers
         'stats_bind' => '0.0.0.0',
-        'stats_port' => 7984,
+        'stats_port' => settings[:stats_port],
         'listeners' => [listener],
       }
     end
