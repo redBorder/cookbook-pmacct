@@ -8,11 +8,9 @@ action :add do
     config_dir = new_resource.config_dir
     sensors = new_resource.sensors
     settings = {
-      port: new_resource.port,
       bind: new_resource.sfacctd_ip || '0.0.0.0',
       brokers: new_resource.kafka_hosts.map { |host| "#{host}:#{new_resource.kafka_broker_port}" },
       topic: new_resource.kafka_topic,
-      stats_port: new_resource.stats_port,
     }
 
     # redborder-sfacctd ships the sfacctd unit running x2kafka, overriding the one of the legacy
@@ -101,7 +99,7 @@ action :register do
       query['ID'] = "sfacct-#{node['hostname']}"
       query['Name'] = 'sfacct'
       query['Address'] = "#{node['ipaddress']}"
-      query['Port'] = new_resource.port.to_s
+      query['Port'] = node['pmacct']['port'].to_s
       json_query = Chef::JSONCompat.to_json(query)
 
       execute 'Register service in consul' do
