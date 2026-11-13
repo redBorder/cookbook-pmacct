@@ -5,55 +5,46 @@ include Pmacct::Helper
 
 action :add do
   begin
-    user = new_resource.user
-    kafka_hosts = new_resource.kafka_hosts
-    kafka_topic = new_resource.kafka_topic
-    kafka_broker_port = new_resource.kafka_broker_port
-    geo_country = new_resource.geo_country
-    sfacctd_ip = new_resource.sfacctd_ip
+    config_dir = new_resource.config_dir
+    sensors = new_resource.sensors
+    settings = {
+      bind: new_resource.sfacctd_ip || '0.0.0.0',
+      brokers: new_resource.kafka_hosts.map { |host| "#{host}:#{new_resource.kafka_broker_port}" },
+      topic: new_resource.kafka_topic,
+    }
 
-    dnf_package 'pmacct' do
+    # redborder-sfacctd ships the sfacctd unit running x2kafka, overriding the one of the legacy
+    # pmacct package, which is kept because rb-exporter needs its pmacctd
+    dnf_package 'redborder-sfacctd' do
       action :upgrade
     end
 
-    execute 'create_user' do
-      command "/usr/sbin/useradd -r #{user} -s /sbin/nologin"
-      ignore_failure true
-      not_if "getent passwd #{user}"
-    end
-
-    directory '/etc/pmacct' do
-      owner user
-      group group
-      mode '0755'
-    end
-
-    flow_nodes = []
-
-    template '/etc/pmacct/sfacctd.conf' do
-      source 'sfacctd.conf.erb'
-      owner user
-      group user
-      mode '0644'
-      ignore_failure true
-      cookbook 'pmacct'
-      variables(flow_nodes: flow_nodes,
-                kafka_hosts: kafka_hosts,
-                kafka_topic: kafka_topic,
-                kafka_broker_port: kafka_broker_port,
-                geo_country: geo_country,
-                sfacctd_ip: sfacctd_ip)
+    # restart sfacctd when a new x2kafka is installed
+    dnf_package 'x2kafka' do
+      action :upgrade
       notifies :restart, 'service[sfacctd]', :delayed unless node['redborder']['leader_configuring']
     end
 
-    template '/etc/pmacct/pretag.map' do
-      source 'pretag.map.erb'
-      owner user
-      group user
-      mode '0644'
-      ignore_failure true
+    # leftovers of the legacy pmacct sfacctd (sfacctd.conf and pretag.map)
+    directory '/etc/pmacct' do
+      recursive true
+      action :delete
+    end
+
+    directory config_dir do
+      owner 'root'
+      group 'root'
+      mode '0755'
+    end
+
+    template "#{config_dir}/config.json" do
+      source 'sfacctd_config.json.erb'
       cookbook 'pmacct'
-      variables(flow_nodes: flow_nodes)
+      owner 'root'
+      group 'root'
+      mode '0644'
+      retries 2
+      variables(config: x2kafka_config(sensors, settings))
       notifies :restart, 'service[sfacctd]', :delayed unless node['redborder']['leader_configuring']
     end
 
@@ -83,14 +74,15 @@ action :remove do
       action [:stop, :disable]
     end
 
-    %w(/etc/pmacct).each do |path|
+    %W(/etc/pmacct #{new_resource.config_dir}).each do |path|
       directory path do
         recursive true
         action :delete
       end
     end
 
-    dnf_package 'pmacct' do
+    # x2kafka is left installed, other services (http2k, f2k) run it too
+    dnf_package 'redborder-sfacctd' do
       action :remove
     end
 
@@ -107,7 +99,7 @@ action :register do
       query['ID'] = "sfacct-#{node['hostname']}"
       query['Name'] = 'sfacct'
       query['Address'] = "#{node['ipaddress']}"
-      query['Port'] = '6343'
+      query['Port'] = node['pmacct']['port'].to_s
       json_query = Chef::JSONCompat.to_json(query)
 
       execute 'Register service in consul' do
