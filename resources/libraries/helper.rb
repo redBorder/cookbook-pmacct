@@ -69,6 +69,9 @@ module Pmacct
         'port' => node['pmacct']['port'],
         'topic' => settings[:topic],
         'span_port' => !span_ports.empty? && span_ports.all?,
+        # classify each sample with nDPI to fill application_id_name; x2kafka
+        # falls back to the port mapping when it is built without nDPI
+        'ndpi' => true,
         'enrichment_key' => 'sensor_ip',
         'enrichment_map' => enrichment_map,
       }
